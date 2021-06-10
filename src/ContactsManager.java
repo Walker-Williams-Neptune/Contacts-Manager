@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -37,6 +38,16 @@ public class ContactsManager {
     private static final Path toOurContactsPlace = Paths.get("src/contacts-folder");
     private static final Path toContacts = Paths.get("src/contacts-folder/contacts.txt");
 
+    private static List<String> currentList = new ArrayList<>();
+
+    public static void readFileAndUpdateCurrentList (Path pathToFile) {
+        try {
+            currentList = Files.readAllLines(pathToFile);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void createPath() {
 //        Directory
         try {
@@ -63,17 +74,20 @@ public class ContactsManager {
 
     public static void addToContacts() {
         try {
-
+            Files.writeString(toContacts, createContact(), StandardOpenOption.APPEND);
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public static List<String> contactInfo = new ArrayList<>();
 
-    public static void createContact() {
+    public static String createContact() {
        Input in = new Input(); // instantiate new input to use for createContact
        String userContactName = in.getString();
        int userContactNum = in.getInt();
        contactInfo.add(userContactName + " | " + userContactNum);
+       return "\n" + userContactName + " | " + userContactNum;
     }
 
 
@@ -81,7 +95,12 @@ public class ContactsManager {
 //        displayMenu();
 //        createContact();
 //        System.out.println(contactInfo);
-        createPath();
+//        createPath();
+//        addToContacts();
+        System.out.println(currentList);
+        readFileAndUpdateCurrentList(toContacts);
+        System.out.println(currentList);
+
     }
 }
 
