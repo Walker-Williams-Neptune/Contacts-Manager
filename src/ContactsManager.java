@@ -18,8 +18,6 @@ public class ContactsManager {
         "Exit."
     };
 
-//    public static Input input = new Input();
-
     public static Scanner sc = new Scanner(System.in);
 
     public static void displayMenu() {
@@ -36,14 +34,22 @@ public class ContactsManager {
 
     }
 
+    private static final Path toOurContactsPlace = Paths.get("src/contacts-folder");
+    private static final Path toContacts = Paths.get("src/contacts-folder/contacts.txt");
+
     public static void createPath() {
+//        Directory
+        try {
+            if (Files.notExists(toOurContactsPlace)) {
+                Files.createDirectory(toOurContactsPlace);
+            }else {
+                System.out.println("The " + toOurContactsPlace + " Directory already exists");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
-//        Path toOurContactsPlace = Paths.get("src/contacts");
-//
-//        Path toOurDataFile = Paths.get(String.valueOf(toOurContactsPlace), "data.txt");
-
-        Path toContacts = Paths.get("src/contacts-folder/contacts.txt");
-
+//        File
         try {
             if(Files.notExists(toContacts)) {
                 Files.createFile(toContacts);
@@ -53,35 +59,18 @@ public class ContactsManager {
         }catch (IOException e) {
             e.printStackTrace();
         }
-
-        //        Create directory
-//        try {
-//            if (Files.notExists(toOurContactsPlace)) {
-//                Files.createDirectories(toOurContactsPlace);
-//            }else {
-//                System.out.println("The " + toOurContactsPlace + " directory already exists.");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-////        Create file
-//        try {
-//            if (Files.notExists(toOurDataFile)) {
-//                Files.createFile(toOurDataFile);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
+    public static void addToContacts() {
+        try {
 
+        }
+    }
 
     public static List<String> contactInfo = new ArrayList<>();
 
-
     public static void createContact() {
-       Input in = new Input();
+       Input in = new Input(); // instantiate new input to use for createContact
        String userContactName = in.getString();
        int userContactNum = in.getInt();
        contactInfo.add(userContactName + " | " + userContactNum);
@@ -89,23 +78,10 @@ public class ContactsManager {
 
 
     public static void main(String[] args) {
-
-
 //        displayMenu();
 //        createContact();
 //        System.out.println(contactInfo);
         createPath();
-
-
-
-
-
-
-//        input.getString();
-//        Path contactsFolder = Paths.get("src/contacts");
-
-//        Path contactsFile = Paths.get(String.valueOf(contactsFolder),"contacts.txt");
-
     }
 }
 
