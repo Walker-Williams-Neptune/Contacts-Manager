@@ -17,7 +17,7 @@ public class Input {
         return input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y");
     }
     public int getInt(){
-//        System.out.println("Enter a number.");
+        System.out.println("Enter a phone number.");
         return scanner.nextInt();
     }
     // Exception handling
