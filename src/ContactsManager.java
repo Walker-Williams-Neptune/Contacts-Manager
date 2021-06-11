@@ -42,6 +42,9 @@ public class ContactsManager {
             String contact = listIterator.next();
             if (contact.toLowerCase(Locale.ROOT).contains(userSearch.toLowerCase(Locale.ROOT))) {
                 System.out.println(contact);
+            } else {
+                System.out.println("No contact found.");
+                break;
             }
         }
     }
@@ -63,6 +66,9 @@ public class ContactsManager {
                         break;
                     }
                 }
+            } else {
+                System.out.println("No contact found.");
+                break;
             }
         }
     }
