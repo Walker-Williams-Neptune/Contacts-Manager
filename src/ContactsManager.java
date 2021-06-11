@@ -5,9 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ContactsManager {
 
@@ -47,6 +45,40 @@ public class ContactsManager {
             e.printStackTrace();
         }
     }
+
+    public static void searchForContact() {
+        Input in = new Input();
+        System.out.println("Search for contact.");
+        String userSearch = in.getString();
+        Iterator<String> listIterator = currentList.iterator();
+        while (listIterator.hasNext()) {
+            String contact = listIterator.next();
+            if (contact.toLowerCase(Locale.ROOT).contains(userSearch.toLowerCase(Locale.ROOT))) {
+                System.out.println(contact);
+            }
+        }
+    }
+    public static void removeContact() {
+        Input in = new Input();
+        System.out.println("Enter contact you want to remove.");
+        String userSearch = in.getString();
+        Iterator<String> listIterator = currentList.iterator();
+        while (listIterator.hasNext()) {
+            String contact = listIterator.next();
+            if (contact.toLowerCase(Locale.ROOT).contains(userSearch.toLowerCase(Locale.ROOT))) {
+                System.out.println("Would you like to remove?: " + contact);
+                if (in.yesNo()) {
+                    System.out.println("Are you sure you want to remove?: " + contact);
+                    if (in.yesNo()) {
+                        System.out.println(contact + " was removed.");
+                        listIterator.remove();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
 
     public static void createPath() {
 //        Directory
@@ -97,8 +129,13 @@ public class ContactsManager {
 //        System.out.println(contactInfo);
 //        createPath();
 //        addToContacts();
+//        addToContacts();
         System.out.println(currentList);
         readFileAndUpdateCurrentList(toContacts);
+        System.out.println(currentList);
+//        searchForContact();
+//        searchForContact();
+        removeContact();
         System.out.println(currentList);
 
     }
