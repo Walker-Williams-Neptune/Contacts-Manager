@@ -17,18 +17,25 @@ public class Input {
         String input = scanner.next();
         return input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y");
     }
-    public int getInt(){
-        System.out.println("Enter a phone number.");
-        return scanner.nextInt();
-    }
+//    public int getInt(){
+//        System.out.println("Enter a phone number.");
+//
+//        return scanner.nextInt();
+//    }
     // Exception handling
-    public int getIntStr() {
+    public int getInt() {
         System.out.println("Enter contact phone number.");
         try {
-           return Integer.valueOf(getString());
+            String input = scanner.nextLine();
+            if (input.length() == 7 || input.length() == 10) {
+                return Integer.parseInt(input);
+            } else {
+                System.out.println("Invalid input. Enter a 7 or 10 digit phone number please. Ex: 5555555");
+                return getInt();
+            }
         } catch (NumberFormatException nfe) {
-            System.out.println("Enter a number please.");
-            return getIntStr();
+            System.out.println("Invalid input. Enter a 7 or 10 digit phone number please. Ex: 5555555");
+            return getInt();
         }
     }
     public int getInt(int min, int max) {

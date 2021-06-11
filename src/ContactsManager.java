@@ -87,6 +87,7 @@ public class ContactsManager {
         }
         try {
             Files.writeString(toContacts, contact, StandardOpenOption.APPEND);
+            System.out.println("Successfully created contact: " + contact);
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,7 +95,7 @@ public class ContactsManager {
     // This method will return to main menu if the user chooses to.
     public static void returnToMenu() {
         Input in = new Input();
-        System.out.println("Would you like to return to main menu?");
+        System.out.println("Would you like to return to main menu? Yes for main menu or no for exit.");
         if (in.yesNo()) {
             displayMenu();
         }
