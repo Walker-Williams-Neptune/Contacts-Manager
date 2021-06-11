@@ -1,5 +1,6 @@
 package util;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Input {
@@ -40,6 +41,29 @@ public class Input {
             return userInputNum;
         }
     }
+
+
+//Work in progress for catching string input
+//    public int getInt(int min, int max) {
+//        System.out.printf("Enter a number between %d and %d:%n", min, max);
+//        int userInputNum = 0;
+//
+//        try {
+//            userInputNum = scanner.nextInt();
+//        }catch (InputMismatchException i ) {
+//            System.out.println("Please enter a number");
+//            i.printStackTrace();
+////            return getInt(min, max);
+//        }
+//        if (userInputNum > max || userInputNum < min) {
+//            System.out.println("Invalid input, Try again!");
+////            return getInt(min, max);
+//            return userInputNum;
+//        } else {
+//            return userInputNum;
+//        }
+//    }
+
     public double getDouble(){
         System.out.println("Enter a number with a decimal.");
         return scanner.nextDouble();

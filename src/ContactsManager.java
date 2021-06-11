@@ -25,11 +25,45 @@ public class ContactsManager {
             System.out.println(i + 1 + ". " + menuOptions[i]);
         }
 
+
+
         // This uses getInt to grab a number from 1 to the total length of menu options
         int userNum = in.getInt(1, menuOptions.length);
-        String userChoice = menuOptions[userNum - 1];
 
-        System.out.println(userChoice);
+        readFileAndUpdateCurrentList(toContacts);
+        switch (userNum) {
+            case 1:
+                System.out.println("Name | Phone number\n---------------");
+                for (String list : currentList) {
+                    System.out.println(list);
+                }
+                returnMenu();
+                break;
+            case 2:
+                addToContacts();
+                returnMenu();
+                break;
+            case 3:
+                System.out.println("This is case 3");
+                searchForContact();
+                returnMenu();
+                break;
+            case 4:
+                System.out.println("This is case 4");
+                removeContact();
+                writeToContacts();
+                returnMenu();
+                break;
+            case 5:
+                System.out.println("See you later!");
+                break;
+            default:
+                System.out.println("Invalid option, try again");
+                break;
+        }
+//        String userChoice = menuOptions[userNum - 1];
+
+//        System.out.println(userChoice);
 
     }
 
@@ -43,6 +77,22 @@ public class ContactsManager {
             currentList = Files.readAllLines(pathToFile);
         }catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void returnMenu() {
+        Input in = new Input();
+        System.out.println("Would you like to return to main menu?");
+        if (in.yesNo()) {
+            displayMenu();
+        }
+    }
+
+    public static void writeToContacts() {
+        try {
+            Files.write(toContacts, currentList);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 
@@ -112,31 +162,37 @@ public class ContactsManager {
         }
     }
 
-    public static List<String> contactInfo = new ArrayList<>();
+//    public static List<String> contactInfo = new ArrayList<>();
 
     public static String createContact() {
        Input in = new Input(); // instantiate new input to use for createContact
        String userContactName = in.getString();
        int userContactNum = in.getInt();
-       contactInfo.add(userContactName + " | " + userContactNum);
-       return "\n" + userContactName + " | " + userContactNum;
+
+       if (currentList.isEmpty()) {
+           return userContactName + " | " + userContactNum;
+       }else {
+           return "\n" + userContactName + " | " + userContactNum;
+       }
+
     }
 
 
     public static void main(String[] args) {
-//        displayMenu();
+        displayMenu();
 //        createContact();
 //        System.out.println(contactInfo);
 //        createPath();
 //        addToContacts();
 //        addToContacts();
-        System.out.println(currentList);
-        readFileAndUpdateCurrentList(toContacts);
-        System.out.println(currentList);
+//        System.out.println(currentList);
+//        readFileAndUpdateCurrentList(toContacts);
+//        System.out.println(currentList);
 //        searchForContact();
 //        searchForContact();
-        removeContact();
-        System.out.println(currentList);
+//        removeContact();
+//        writeToContacts();
+//        System.out.println(currentList);
 
     }
 }
