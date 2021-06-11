@@ -8,7 +8,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class ContactsManager {
-
+    // Array of menu options.
     public static String[] menuOptions = {
         "View contacts.",
         "Add a new contact.",
@@ -17,85 +17,22 @@ public class ContactsManager {
         "Exit."
     };
 
-    public static Scanner sc = new Scanner(System.in);
-
-    public static void displayMenu() {
-        Input in = new Input();
-        for (int i = 0; i < menuOptions.length; ++i) {
-            System.out.println(i + 1 + ". " + menuOptions[i]);
-        }
-
-
-
-        // This uses getInt to grab a number from 1 to the total length of menu options
-        int userNum = in.getInt(1, menuOptions.length);
-
-        readFileAndUpdateCurrentList(toContacts);
-        switch (userNum) {
-            case 1:
-                System.out.println("Name | Phone number\n---------------");
-                for (String list : currentList) {
-                    System.out.println(list);
-                }
-                returnMenu();
-                break;
-            case 2:
-                addToContacts();
-                returnMenu();
-                break;
-            case 3:
-                System.out.println("This is case 3");
-                searchForContact();
-                returnMenu();
-                break;
-            case 4:
-                System.out.println("This is case 4");
-                removeContact();
-                writeToContacts();
-                returnMenu();
-                break;
-            case 5:
-                System.out.println("See you later!");
-                break;
-            default:
-                System.out.println("Invalid option, try again");
-                break;
-        }
-//        String userChoice = menuOptions[userNum - 1];
-
-//        System.out.println(userChoice);
-
-    }
-
-    private static final Path toOurContactsPlace = Paths.get("src/contacts-folder");
+    // Path to contacts.txt file.
     private static final Path toContacts = Paths.get("src/contacts-folder/contacts.txt");
 
+    // Polymorphic ArrayList we use to store our contacts.txt file contents in.
     private static List<String> currentList = new ArrayList<>();
 
-    public static void readFileAndUpdateCurrentList (Path pathToFile) {
+    // This method reads the contacts.txt file and updates our currentList ArrayList.
+    public static void readFileAndUpdateCurrentList () {
         try {
-            currentList = Files.readAllLines(pathToFile);
+            currentList = Files.readAllLines(toContacts);
         }catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void returnMenu() {
-        Input in = new Input();
-        System.out.println("Would you like to return to main menu?");
-        if (in.yesNo()) {
-            displayMenu();
-        }
-    }
-
-    public static void writeToContacts() {
-        try {
-            Files.write(toContacts, currentList);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
-
+    // This method searches currentList for user input name.
     public static void searchForContact() {
         Input in = new Input();
         System.out.println("Search for contact.");
@@ -108,6 +45,7 @@ public class ContactsManager {
             }
         }
     }
+    // This method searches currentList for contact to remove then removes it from currentList upon confirmation.
     public static void removeContact() {
         Input in = new Input();
         System.out.println("Enter contact you want to remove.");
@@ -128,72 +66,106 @@ public class ContactsManager {
             }
         }
     }
-
-
-    public static void createPath() {
-//        Directory
+    // This method writes our currentList to our contacts.txt file.
+    public static void writeToContacts() {
         try {
-            if (Files.notExists(toOurContactsPlace)) {
-                Files.createDirectory(toOurContactsPlace);
-            }else {
-                System.out.println("The " + toOurContactsPlace + " Directory already exists");
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-//        File
-        try {
-            if(Files.notExists(toContacts)) {
-                Files.createFile(toContacts);
-            }else {
-                System.out.println("File already exists");
-            }
-        }catch (IOException e) {
-            e.printStackTrace();
+            Files.write(toContacts, currentList);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
-
+    // This method creates a new contact and adds it to our contacts.txt file.
     public static void addToContacts() {
+        Input in = new Input();
+        String userContactName = in.getString();
+        int userContactNum = in.getInt();
+        String contact;
+        if (currentList.isEmpty()) {
+            contact = userContactName + " | " + userContactNum;
+        }else {
+            contact = "\n" + userContactName + " | " + userContactNum;
+        }
         try {
-            Files.writeString(toContacts, createContact(), StandardOpenOption.APPEND);
+            Files.writeString(toContacts, contact, StandardOpenOption.APPEND);
         }catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-//    public static List<String> contactInfo = new ArrayList<>();
-
-    public static String createContact() {
-       Input in = new Input(); // instantiate new input to use for createContact
-       String userContactName = in.getString();
-       int userContactNum = in.getInt();
-
-       if (currentList.isEmpty()) {
-           return userContactName + " | " + userContactNum;
-       }else {
-           return "\n" + userContactName + " | " + userContactNum;
-       }
-
+    public static void returnToMenu() {
+        Input in = new Input();
+        System.out.println("Would you like to return to main menu?");
+        if (in.yesNo()) {
+            displayMenu();
+        }
     }
+    public static void displayMenu() {
+        Input in = new Input();
+        for (int i = 0; i < menuOptions.length; ++i) {
+            System.out.println(i + 1 + ". " + menuOptions[i]);
+        }
 
+        // This uses getInt to get an user input number based on the length of menu options starting at 1
+        int userNum = in.getInt(1, menuOptions.length);
 
+        readFileAndUpdateCurrentList();
+        switch (userNum) {
+            case 1:
+                System.out.println("Name | Phone number\n---------------");
+                for (String list : currentList) {
+                    System.out.println(list);
+                }
+                returnToMenu();
+                break;
+            case 2:
+                addToContacts();
+                returnToMenu();
+                break;
+            case 3:
+                searchForContact();
+                returnToMenu();
+                break;
+            case 4:
+                removeContact();
+                writeToContacts();
+                returnToMenu();
+                break;
+            case 5:
+                System.out.println("See you later!");
+                break;
+            default:
+                System.out.println("Invalid option, try again");
+                break;
+        }
+    }
     public static void main(String[] args) {
         displayMenu();
-//        createContact();
-//        System.out.println(contactInfo);
-//        createPath();
-//        addToContacts();
-//        addToContacts();
-//        System.out.println(currentList);
-//        readFileAndUpdateCurrentList(toContacts);
-//        System.out.println(currentList);
-//        searchForContact();
-//        searchForContact();
-//        removeContact();
-//        writeToContacts();
-//        System.out.println(currentList);
-
     }
 }
 
+
+
+// Not in use, we used this code to create our directory/folder and our text file for this project initially.
+// private static final Path toOurContactsFolder = Paths.get("src/contacts-folder");
+//    public static void createPath() {
+////        Directory
+//        try {
+//            if (Files.notExists(toOurContactsFolder)) {
+//                Files.createDirectory(toOurContactsFolder);
+//            }else {
+//                System.out.println("The " + toOurContactsFolder + " Directory already exists");
+//            }
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+//
+////        File
+//        try {
+//            if(Files.notExists(toContacts)) {
+//                Files.createFile(toContacts);
+//            }else {
+//                System.out.println("File already exists");
+//            }
+//        }catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
