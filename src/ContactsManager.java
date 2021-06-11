@@ -91,6 +91,7 @@ public class ContactsManager {
             e.printStackTrace();
         }
     }
+    // This method will return to main menu if the user chooses to.
     public static void returnToMenu() {
         Input in = new Input();
         System.out.println("Would you like to return to main menu?");
@@ -98,6 +99,8 @@ public class ContactsManager {
             displayMenu();
         }
     }
+    // This method runs the contact manager program by displaying the menu and asking for user input and executing methods
+    // based on user input.
     public static void displayMenu() {
         Input in = new Input();
         for (int i = 0; i < menuOptions.length; ++i) {
