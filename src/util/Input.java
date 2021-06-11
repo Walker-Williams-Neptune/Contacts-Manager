@@ -1,6 +1,5 @@
 package util;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Input {
@@ -15,13 +14,9 @@ public class Input {
     public boolean yesNo() {
         System.out.println("Enter yes or no");
         String input = scanner.next();
-        return input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y");
+        return input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y") || input.equalsIgnoreCase("ye");
     }
-//    public int getInt(){
-//        System.out.println("Enter a phone number.");
-//
-//        return scanner.nextInt();
-//    }
+
     // Exception handling
     public int getInt() {
         System.out.println("Enter contact phone number.");
@@ -40,60 +35,17 @@ public class Input {
     }
     public int getInt(int min, int max) {
         System.out.printf("Enter a number between %d and %d:%n", min, max);
-        int userInputNum = scanner.nextInt();
-        if (userInputNum > max || userInputNum < min) {
+        try {
+        String userInputNum = scanner.nextLine();
+        if (Integer.parseInt(userInputNum) > max || Integer.parseInt(userInputNum) < min) {
             System.out.println("Invalid input, Try again!");
             return getInt(min, max);
         } else {
-            return userInputNum;
+            return Integer.parseInt(userInputNum);
         }
-    }
-
-
-//Work in progress for catching string input
-//    public int getInt(int min, int max) {
-//        System.out.printf("Enter a number between %d and %d:%n", min, max);
-//        int userInputNum = 0;
-//
-//        try {
-//            userInputNum = scanner.nextInt();
-//        }catch (InputMismatchException i ) {
-//            System.out.println("Please enter a number");
-//            i.printStackTrace();
-////            return getInt(min, max);
-//        }
-//        if (userInputNum > max || userInputNum < min) {
-//            System.out.println("Invalid input, Try again!");
-////            return getInt(min, max);
-//            return userInputNum;
-//        } else {
-//            return userInputNum;
-//        }
-//    }
-
-    public double getDouble(){
-        System.out.println("Enter a number with a decimal.");
-        return scanner.nextDouble();
-    }
-    // Exception handling
-    public Double getDoubleStr() {
-        System.out.println("Enter a decimal number.");
-        try {
-            return Double.valueOf(getString());
         } catch (NumberFormatException nfe) {
-            System.out.println("Enter a decimal number please.");
-            return getDoubleStr();
-        }
-    }
-    public double getDouble(double min, double max) {
-        System.out.printf("Enter a number with a decimal between %f and %f:%n", min, max);
-        double userInputNum = scanner.nextDouble();
-        if (userInputNum > max || userInputNum < min) {
             System.out.println("Invalid input, Try again!");
-            return getDouble(min, max);
-        } else {
-            return userInputNum;
+            return getInt(min, max);
         }
     }
-
 }
