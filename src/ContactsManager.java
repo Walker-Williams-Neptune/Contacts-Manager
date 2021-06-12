@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class ContactsManager {
@@ -38,14 +37,17 @@ public class ContactsManager {
         System.out.println("Search for contact.");
         String userSearch = in.getString();
         Iterator<String> listIterator = currentList.iterator();
+        boolean hasMatch = false;
+
         while (listIterator.hasNext()) {
-            String contact = listIterator.next();
+           String contact = listIterator.next();
             if (contact.toLowerCase(Locale.ROOT).contains(userSearch.toLowerCase(Locale.ROOT))) {
                 System.out.println(contact);
-            } else {
-                System.out.println("No contact found.");
-                break;
+                hasMatch = true;
             }
+        }
+        if (!hasMatch) {
+            System.out.println("No contact found.");
         }
     }
     // This method searches currentList for contact to remove then removes it from currentList upon confirmation.
@@ -54,9 +56,12 @@ public class ContactsManager {
         System.out.println("Enter contact you want to remove.");
         String userSearch = in.getString();
         Iterator<String> listIterator = currentList.iterator();
+        boolean hasMatch = false;
+
         while (listIterator.hasNext()) {
             String contact = listIterator.next();
             if (contact.toLowerCase(Locale.ROOT).contains(userSearch.toLowerCase(Locale.ROOT))) {
+                hasMatch = true;
                 System.out.println("Would you like to remove?: " + contact);
                 if (in.yesNo()) {
                     System.out.println("Are you sure you want to remove?: " + contact);
@@ -66,10 +71,10 @@ public class ContactsManager {
                         break;
                     }
                 }
-            } else {
-                System.out.println("No contact found.");
-                break;
             }
+        }
+        if (!hasMatch) {
+            System.out.println("No contact found.");
         }
     }
     // This method writes our currentList to our contacts.txt file.
@@ -85,18 +90,19 @@ public class ContactsManager {
         Input in = new Input();
         String userContactName = in.getString();
         int userContactNum = in.getInt();
-        String contact;
-        if (currentList.isEmpty()) {
-            contact = userContactName + " | " + userContactNum;
-        }else {
-            contact = "\n" + userContactName + " | " + userContactNum;
+        String strNum = String.valueOf(userContactNum);
+        String numWithDash = "";
+
+        if (strNum.length() == 7) {
+            numWithDash = strNum.substring(0,3) + "-" + strNum.substring(3,7);
+        } else if (strNum.length() == 10) {
+            numWithDash = strNum.substring(0,3) + "-" + strNum.substring(3,6) + "-" + strNum.substring(6,10);
         }
-        try {
-            Files.writeString(toContacts, contact, StandardOpenOption.APPEND);
-            System.out.println("Successfully created contact: " + contact);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        String contact = userContactName + " | " + numWithDash;
+        currentList.add(contact);
+        writeToContacts();
+        System.out.println("Successfully created contact: " + contact);
     }
     // This method will return to main menu if the user chooses to.
     public static void returnToMenu() {
