@@ -26,6 +26,7 @@ public class ContactsManager {
     public static void readFileAndUpdateCurrentList () {
         try {
             currentList = Files.readAllLines(toContacts);
+            Collections.sort(currentList);
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,6 +81,7 @@ public class ContactsManager {
     // This method writes our currentList to our contacts.txt file.
     public static void writeToContacts() {
         try {
+            Collections.sort(currentList);
             Files.write(toContacts, currentList);
         } catch (IOException ioe) {
             ioe.printStackTrace();
